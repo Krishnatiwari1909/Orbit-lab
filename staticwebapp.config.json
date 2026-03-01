@@ -1,0 +1,22 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/styles/*",
+      "/js/*",
+      "/login.html"
+    ]
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer-when-downgrade"
+  },
+  "mimeTypes": {
+    ".js": "text/javascript",
+    ".css": "text/css",
+    ".json": "application/json",
+    ".wasm": "application/wasm"
+  }
+}

@@ -1,0 +1,1102 @@
+:root {
+    --bg-color: #000000;
+    --panel-bg: rgba(12, 16, 28, 0.96);
+    --accent-blue: #3fd1ff;
+    --accent-green: #00ff9d;
+    --accent-warn: #ffb86c;
+    --accent-crit: #ff4757;
+    --text-main: #f0f0f0;
+    --text-dim: #8899a6;
+    --border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', monospace;
+    color: var(--text-main);
+}
+
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #050505;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-out;
+}
+
+.loader-content {
+    color: var(--accent-blue);
+    letter-spacing: 4px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.loader-bar {
+    width: 0%;
+    height: 2px;
+    background: var(--accent-blue);
+    margin-top: 10px;
+    animation: load 2s forwards;
+}
+
+@keyframes load {
+    to {
+        width: 100%;
+    }
+}
+
+/* Mission Setup Overlay */
+#mission-setup {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, #0a0a0a, #000);
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    pointer-events: auto;
+}
+
+.mission-setup-content {
+    max-width: 580px;
+    width: 100%;
+    padding: 40px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(63, 209, 255, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 
+                0 0 40px rgba(63, 209, 255, 0.1);
+    text-align: center;
+}
+
+.mission-setup-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin: 0 0 12px 0;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(63, 209, 255, 0.3);
+}
+
+.mission-setup-subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin: 0 0 32px 0;
+    text-transform: uppercase;
+}
+
+.mission-select-wrapper {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.mission-select-wrapper label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+}
+
+#mission-select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: 'Segoe UI', monospace;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(63, 209, 255, 0.3);
+    border-radius: 4px;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233fd1ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+#mission-select:hover {
+    border-color: var(--accent-blue);
+    background-color: rgba(63, 209, 255, 0.05);
+}
+
+#mission-select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    background-color: rgba(63, 209, 255, 0.08);
+    box-shadow: 0 0 12px rgba(63, 209, 255, 0.2);
+}
+
+#mission-select option {
+    background: #0c101c;
+    color: var(--text-main);
+    padding: 10px;
+}
+
+#mission-select option:disabled {
+    color: #555;
+    font-style: italic;
+    background: #080a12;
+}
+
+.mission-info-card {
+    min-height: 180px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(63, 209, 255, 0.15);
+    border-radius: 4px;
+    text-align: left;
+    margin-bottom: 28px;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.6;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-mission-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    border: 2px solid var(--accent-blue);
+    color: var(--accent-blue);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-family: 'Segoe UI', monospace;
+}
+
+.confirm-mission-btn:hover {
+    background: var(--accent-blue);
+    color: #000;
+    box-shadow: 0 0 24px rgba(63, 209, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.confirm-mission-btn:active {
+    transform: scale(0.98) translateY(0);
+}
+
+#mission-setup.mission-setup-visible,
+#mission-setup.mission-setup-hidden {
+    transition: opacity 0.35s ease;
+}
+
+#mission-setup.mission-setup-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#mission-setup.mission-setup-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#mission-setup .confirm-mission-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+
+/* Mission Setup Overlay */
+#mission-setup {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, #0a0a0a, #000);
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.mission-setup-content {
+    max-width: 580px;
+    width: 100%;
+    padding: 40px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    text-align: center;
+}
+
+.mission-setup-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin: 0 0 12px 0;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+}
+
+.mission-setup-subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin: 0 0 32px 0;
+    text-transform: uppercase;
+}
+
+.mission-select-wrapper {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.mission-select-wrapper label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+}
+
+#mission-select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: 'Segoe UI', monospace;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(63, 209, 255, 0.3);
+    border-radius: 4px;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#mission-select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    background: rgba(63, 209, 255, 0.08);
+    box-shadow: 0 0 12px rgba(63, 209, 255, 0.2);
+}
+
+#mission-select option:disabled {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.mission-info-card {
+    min-height: 180px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    text-align: left;
+    margin-bottom: 28px;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.confirm-mission-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    border: 2px solid var(--accent-blue);
+    color: var(--accent-blue);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-family: 'Segoe UI', monospace;
+}
+
+.confirm-mission-btn:hover {
+    background: var(--accent-blue);
+    color: #000;
+    box-shadow: 0 0 24px rgba(63, 209, 255, 0.4);
+}
+
+.confirm-mission-btn:active {
+    transform: scale(0.98);
+}
+
+.mission-helper-text {
+    margin: 12px 0 0 0;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.mission-note {
+    margin: 8px 0 0 0;
+    font-size: 10px;
+    color: rgba(136, 153, 166, 0.6);
+    font-style: italic;
+    letter-spacing: 0.3px;
+}
+
+.controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+    margin-left: auto;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    pointer-events: auto;
+}
+
+#btn-change-mission {
+    pointer-events: auto;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background: radial-gradient(circle at 20% 120%, #101825 0%, #000000 80%);
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+}
+
+.panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    pointer-events: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* Slightly thinner top header bar */
+header.panel {
+    padding: 16px 18px;
+}
+
+/* Labels */
+header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    pointer-events: auto;
+}
+
+header.panel .controls {
+    gap: 6px;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.2rem;
+    border-left: 4px solid var(--accent-blue);
+    padding-left: 12px;
+    margin-right: auto;
+}
+
+.phase-label {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-align: center;
+    pointer-events: none;
+}
+
+.mode-status {
+    color: var(--accent-warn);
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.mode-hint {
+    font-size: 8px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sidebar */
+h2 {
+    margin: 0 0 15px 0;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+/* Main Panel Collapse System */
+.main-panel {
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+}
+
+.main-panel .panel-content {
+    transition: opacity 0.3s ease;
+}
+
+.main-panel.collapsed .panel-content {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Persistent collapsed tabs (fixed to screen edges; no display:none) */
+.collapsed-tab {
+    position: fixed;
+    top: 50%;
+    padding: 12px 8px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: var(--border);
+    color: var(--accent-blue);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, background 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.collapsed-tab:hover {
+    background: rgba(63, 209, 255, 0.1);
+    box-shadow: 0 0 15px rgba(63, 209, 255, 0.25);
+}
+
+.collapsed-tab.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.collapsed-tab-left {
+    left: 0;
+    border-left: none;
+    transform: translateY(-50%) translateX(-100%);
+}
+
+.collapsed-tab-left.visible {
+    transform: translateY(-50%) translateX(0);
+}
+
+.collapsed-tab-right {
+    right: 0;
+    border-right: none;
+    transform: translateY(-50%) translateX(100%);
+}
+
+.collapsed-tab-right.visible {
+    transform: translateY(-50%) translateX(0);
+}
+
+/* Robust visibility: show tabs whenever their panel is collapsed */
+#sidebar.collapsed ~ .collapsed-tab-left {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+}
+
+#mission-panel.collapsed ~ .collapsed-tab-right {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+}
+
+.panel-header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.panel-header-wrapper h2 {
+    margin: 0;
+    border: none;
+    padding: 0;
+    flex: 1;
+}
+
+.panel-collapse-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--accent-blue);
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.panel-collapse-btn:hover {
+    background: rgba(63, 209, 255, 0.1);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(63, 209, 255, 0.2);
+}
+
+.panel-collapse-btn svg {
+    display: block;
+}
+
+.orbit-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Left Panel (Sidebar) Collapse */
+#sidebar {
+    position: absolute;
+    left: 24px;
+    top: 120px;
+    width: 320px;
+}
+
+#sidebar.collapsed {
+    transform: translateX(-110%);
+    opacity: 0;
+}
+
+/* Right Panel (Mission Ops) Collapse */
+#mission-panel.collapsed {
+    transform: translateX(110%);
+    opacity: 0;
+}
+
+.component-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    margin-bottom: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.component-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-left-color: var(--text-dim);
+}
+
+.component-item.active {
+    border-left-color: var(--accent-green);
+    background: rgba(0, 255, 157, 0.08);
+}
+
+.comp-name {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.comp-status {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #444;
+}
+
+.active .comp-status {
+    background: var(--accent-green);
+    box-shadow: 0 0 8px var(--accent-green);
+}
+
+.info-panel {
+    margin-top: 20px;
+    padding: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(63, 209, 255, 0.05);
+    border-radius: 4px;
+    border-left: 2px solid var(--accent-blue);
+}
+
+#info-text {
+    font-size: 12px;
+    color: #ccc;
+    line-height: 1.6;
+    min-height: 60px;
+    word-wrap: break-word;
+}
+
+/* Mission Control */
+#mission-panel {
+    position: absolute;
+    top: 120px;
+    right: 24px;
+    width: 280px;
+    text-align: center;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* AI Panels: single unified expandable cards */
+.ai-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: var(--border);
+    border-radius: 4px;
+    overflow: hidden; /* keeps header/body edges perfectly aligned */
+    text-align: left;
+}
+
+/* Consistent vertical spacing between stacked AI panels */
+#mission-panel .ai-panel + .ai-panel {
+    margin-top: 12px;
+}
+
+/* Header button (always visible) */
+.ai-panel-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--accent-blue);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.ai-panel-header:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(63, 209, 255, 0.18);
+}
+
+.ai-panel-chevron {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-right: 2px solid var(--text-dim);
+    border-bottom: 2px solid var(--text-dim);
+    transform: rotate(45deg);
+    transition: transform 260ms ease, border-color 260ms ease;
+    flex-shrink: 0;
+}
+
+.ai-panel.expanded .ai-panel-chevron {
+    transform: rotate(-135deg);
+    border-color: var(--accent-blue);
+}
+
+/* Body: animated dropdown, no internal scrollbars */
+.ai-panel-body {
+    padding: 12px 14px 14px 14px;
+    overflow: visible;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: max-height 320ms cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 220ms ease,
+                transform 220ms ease;
+    will-change: max-height, opacity, transform;
+}
+
+.ai-panel.expanded .ai-panel-body {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: none; /* unlocked after expansion via JS */
+}
+
+/* Output text: product-like typography + robust wrapping (no borders/scrollbars) */
+#ai-text,
+#vision-output,
+#language-output,
+.ai-panel-body pre {
+    margin: 10px 0 0 0;
+    padding: 10px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: none;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: inherit;
+    color: rgba(240, 240, 240, 0.78);
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    overflow: visible;
+}
+
+/* Payload Vision output: match Mission Advisor readability (12px, non-monospace, paragraph-like flow) */
+#vision-output {
+    font-size: 12px;
+    white-space: pre-line;
+}
+
+.orbit-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.orbit-timer {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: monospace;
+    color: var(--text-main);
+    margin: 10px 0;
+}
+
+.sim-note {
+    font-size: 10px;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Command Deck (NEW) */
+.command-deck {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.cmd-btn {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #fff;
+    opacity: 0.9;
+    transition: 0.2s;
+}
+
+.cmd-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.cmd-btn:hover:not(:disabled) {
+    opacity: 1.0;
+}
+
+.cmd-btn.start {
+    background: var(--accent-green);
+    color: #000;
+}
+
+.cmd-btn.pause {
+    background: var(--accent-warn);
+    color: #000;
+}
+
+.cmd-btn.reset {
+    background: var(--accent-crit);
+}
+
+.time-controls {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+}
+
+.time-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-right: 5px;
+}
+
+.t-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-dim);
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.t-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.t-btn.active {
+    background: var(--accent-blue);
+    color: #000;
+    border-color: var(--accent-blue);
+    font-weight: bold;
+}
+
+/* Bottom Stats */
+#mission-control {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 780px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Slightly thinner Mission Control bar */
+#mission-control.panel {
+    padding: 16px;
+}
+
+.stat-block {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.stat-block:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 8px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.btn {
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 6px 16px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.2s;
+    letter-spacing: 1px;
+}
+
+.btn:hover,
+.btn.active {
+    background: var(--accent-blue);
+    color: #000;
+    box-shadow: 0 0 15px rgba(63, 209, 255, 0.3);
+}
+
+.good {
+    color: var(--accent-green);
+}
+
+.warn {
+    color: var(--accent-warn);
+}
+
+.crit {
+    color: var(--accent-crit);
+}
+/* HIDE SIMULATION BY DEFAULT */
+#ui-layer, #canvas-container {
+    display: none; /* Hidden until authorized */
+}
+
+/* We will add this class via JS if login is successful */
+body.authorized #ui-layer, 
+body.authorized #canvas-container {
+    display: block;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#payload-vision-panel {
+    margin-top: 0;
+    padding: 0;
+}
+
+#vision-file {
+    width: 100%;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-main);
+    font-size: 11px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+#vision-file:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+/* ===== MISSION COPILOT INPUT ===== */
+#copilot-input {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    color: var(--text-main);
+    font-size: 12px;
+    font-family: inherit;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+#copilot-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+#copilot-output {
+    margin: 10px 0 0 0;
+}
+
+/* ===== COLLISION ALERT MODAL ===== */
+#collision-alert {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.75);
+    align-items: center;
+    justify-content: center;
+}
+
+#collision-alert.visible {
+    display: flex !important;
+}
+
+#collision-alert-box {
+    background: rgba(90, 0, 0, 0.95);
+    border: 2px solid #ff2222;
+    border-radius: 6px;
+    padding: 32px 40px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 30, 30, 0.5);
+    color: #fff;
+    font-family: inherit;
+}
+
+#collision-alert-icon {
+    font-size: 36px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+#collision-alert-box strong {
+    display: block;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #ff4444;
+    margin-bottom: 12px;
+}
+
+#collision-alert-box p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+#collision-dismiss-btn {
+    background: #ff2222;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#collision-dismiss-btn:hover {
+    background: #cc0000;
+}
