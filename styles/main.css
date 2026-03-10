@@ -684,7 +684,7 @@ h2 {
     position: absolute;
     top: 120px;
     right: 24px;
-    width: 280px;
+    width: 340px;
     text-align: center;
     max-height: calc(100vh - 160px);
     overflow-y: auto;
@@ -1100,3 +1100,9 @@ body.authorized #canvas-container {
 #collision-dismiss-btn:hover {
     background: #cc0000;
 }
+
+
+
+
+
+

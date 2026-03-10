@@ -309,3 +309,8 @@ export function createEarthRoughnessMap() {
         drawLandMask(w*0.45, h*0.8, 50, 60, 0.2);
     });
 }
+
+
+
+
+

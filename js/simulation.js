@@ -41,11 +41,8 @@ export function removeTrackedSatellite(id) {
 // ─── Collision Detection Threshold ───────────────────────────────────────────
 const COLLISION_THRESHOLD = 5; // units (Three.js world space)
 
-// ─── Mission Copilot: wire up the Launch Analysis button ─────────────────────
+// ─── Collision Alert Dismiss ─────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-    const copilotBtn = document.getElementById("copilot-btn");
-    const copilotInput = document.getElementById("copilot-input");
-    const copilotOutput = document.getElementById("copilot-output");
     const collisionAlert = document.getElementById("collision-alert");
     const dismissBtn = document.getElementById("collision-dismiss-btn");
 
@@ -55,54 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
             collisionAlert.style.display = "none";
         });
     }
-
-    if (!copilotBtn || !copilotInput) return;
-
-    copilotBtn.addEventListener("click", async () => {
-        const prompt = copilotInput.value.trim();
-        if (!prompt) {
-            if (copilotOutput) copilotOutput.textContent = "⚠️ Please enter a mission description.";
-            return;
-        }
-
-        copilotBtn.disabled = true;
-        if (copilotOutput) copilotOutput.textContent = "Analyzing mission parameters…";
-
-        try {
-            // Absolute URL — avoids any ambiguity with relative paths or API_BASE_URL resolution
-            const response = await fetch("http://localhost:3001/api/ai/launch", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt })
-            });
-
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log("Mission Copilot — structured launch parameters:", data);
-
-            if (copilotOutput) {
-                copilotOutput.textContent = [
-                    `Satellite Type : ${data.satellite_type}`,
-                    `Mass           : ${data.mass_kg} kg`,
-                    `Altitude       : ${data.altitude_km} km`,
-                    `Velocity       : ${data.velocity_km_s} km/s`,
-                    `Inclination    : ${data.inclination_deg}°`
-                ].join("\n");
-            }
-
-            // TODO: Pass JSON to 3D satellite spawner
-            // e.g. spawnSatellite(data);
-
-        } catch (err) {
-            console.error("Mission Copilot error:", err);
-            if (copilotOutput) copilotOutput.textContent = "AI service unavailable. Please try again later.";
-        } finally {
-            copilotBtn.disabled = false;
-        }
-    });
 });
 
 // ─── Collision Detection (call each frame from the render loop) ───────────────
@@ -242,4 +191,10 @@ export async function askMissionAI(context) {
         return "AI service unavailable. Please try again later.";
     }
 }
+
+
+
+
+
+
 

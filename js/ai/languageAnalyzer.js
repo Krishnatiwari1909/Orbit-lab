@@ -22,3 +22,9 @@ export async function analyzeText(text) {
         };
     }
 }
+
+
+
+
+
+

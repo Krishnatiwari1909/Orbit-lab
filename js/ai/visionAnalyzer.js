@@ -22,3 +22,9 @@ export async function analyzeImage(imageFile) {
         throw new Error("AI service unavailable. Please try again later.");
     }
 }
+
+
+
+
+
+

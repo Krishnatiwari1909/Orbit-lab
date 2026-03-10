@@ -46,6 +46,14 @@ const satelliteLaunchSchema = {
         satellite_type: {
             type: Type.STRING,
             description: "Category of satellite (e.g. Earth Observation, Communication, Weather)"
+        },
+        target_lat: {
+            type: Type.NUMBER,
+            description: "Latitude of the target location/city (e.g., 19.07 for Mumbai). Default to 20.59 if none specified."
+        },
+        target_lon: {
+            type: Type.NUMBER,
+            description: "Longitude of the target location/city (e.g., 72.87 for Mumbai). Default to 78.96 if none specified."
         }
     },
     required: [
@@ -53,7 +61,9 @@ const satelliteLaunchSchema = {
         "altitude_km",
         "velocity_km_s",
         "inclination_deg",
-        "satellite_type"
+        "satellite_type",
+        "target_lat",
+        "target_lon"
     ]
 };
 
@@ -76,6 +86,7 @@ router.post("/launch", async (req, res) => {
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
+                systemInstruction: "You are an expert aerospace engineer. Based on the user's mission prompt, you must estimate realistic orbital mechanics (mass, altitude, velocity, inclination). NEVER return 0 for these physical properties. For LEO, altitude is usually 400-800km, velocity is ~7.5km/s.",
                 responseMimeType: "application/json",
                 responseSchema: satelliteLaunchSchema
             }
@@ -114,6 +125,7 @@ router.post("/analyze", async (req, res) => {
         }
 
         const response = await client.models.generateContent({
+            // CHANGED MODEL TO AVOID QUOTA LIMITS
             model: 'gemini-2.5-flash',
             contents: `You are a satellite operations AI. Answer in one short sentence.\n\n${prompt}`
         });
@@ -127,3 +139,8 @@ router.post("/analyze", async (req, res) => {
 });
 
 export default router;
+
+
+
+
+

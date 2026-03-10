@@ -7,6 +7,7 @@ let scene, camera, renderer, controls;
 let sunLight, ambientLight, rimLight, earthLight, fillLight;
 let earthGroup, starSystem;
 let earthMesh, cloudMesh;
+let isTargetLocked = false;
 export function initScene(container) {
 
     scene = new THREE.Scene();
@@ -186,18 +187,118 @@ function setupStars() {
 // Inside scene.js
 
 export function updateEnvironment() {
-    // ROTATE EARTH (Standard Speed)
-    if (earthMesh) {
-        earthMesh.rotation.y += 0.0002;
+    // ROTATE EARTH + CLOUDS only when no target is locked
+    if (!isTargetLocked) {
+        if (earthMesh) {
+            earthMesh.rotation.y += 0.0002;
+        }
+        if (cloudMesh) {
+            cloudMesh.rotation.y += 0.00028;
+        }
     }
 
-    // ROTATE CLOUDS (Slightly Faster = Parallax Effect)
-    if (cloudMesh) {
-        cloudMesh.rotation.y += 0.00028; 
-    }
-
-    // ROTATE STARS (Background)
+    // ROTATE STARS (Background — always)
     if (starSystem) {
         starSystem.rotation.y -= 0.00005;
     }
 }
+
+// --------------------------------------------------
+// LOCK ONTO TARGET (Red Dot Targeting)
+// --------------------------------------------------
+let lockAnimationId = null;
+
+export function lockOntoTarget(lat, lon) {
+    if (!earthGroup || !earthMesh || !camera) return;
+    isTargetLocked = true; // Pauses ambient spin in updateEnvironment
+
+    if (lockAnimationId) {
+        cancelAnimationFrame(lockAnimationId);
+        lockAnimationId = null;
+    }
+
+    // 1. Ensure Marker exists
+    if (!earthGroup.userData.marker) {
+        const marker = new THREE.Group();
+        const coreMat = new THREE.MeshBasicMaterial({ color: 0xff2222, depthTest: false, depthWrite: false });
+        const coreMesh = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), coreMat);
+        coreMesh.renderOrder = 999;
+        marker.add(coreMesh);
+
+        const glowMat = new THREE.MeshBasicMaterial({ color: 0xff4444, transparent: true, opacity: 0.5, depthTest: false, depthWrite: false });
+        const glowMesh = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), glowMat);
+        glowMesh.renderOrder = 998;
+        marker.add(glowMesh);
+
+        earthMesh.add(marker);
+        earthGroup.userData.marker = marker;
+    }
+
+    const marker = earthGroup.userData.marker;
+    marker.visible = true;
+
+    // 2. Position marker using spherical coordinates
+    const radius = earthMesh.geometry.parameters.radius;
+    const phi = (90 - lat) * (Math.PI / 180);
+    const theta = (lon + 90) * (Math.PI / 180);
+    marker.position.setFromSphericalCoords(radius + 0.02, phi, theta);
+
+    // 3. Dynamic Camera Calculations
+    const camRel = camera.position.clone().sub(earthGroup.position);
+    const camAzimuth = Math.atan2(camRel.x, camRel.z);
+    const camElevation = Math.atan2(camRel.y, Math.sqrt(camRel.x * camRel.x + camRel.z * camRel.z));
+
+    // 4. Calculate Absolute Target Visual Orientation
+    // Y rotates longitude to camera. X tilts latitude to camera elevation.
+    // Corrected X-axis tilt: Camera Elevation minus Latitude
+    const targetVisualEuler = new THREE.Euler(
+        camElevation - (lat * Math.PI / 180),
+        camAzimuth - theta,
+        0,
+        'YXZ'
+    );
+    const targetVisualQuat = new THREE.Quaternion().setFromEuler(targetVisualEuler);
+
+    // 5. Compensate for earthMesh's current ambient rotation
+    // We want: GroupQuat * MeshQuat = TargetVisualQuat
+    // So: GroupQuat = TargetVisualQuat * inverse(MeshQuat)
+    const meshQuat = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, earthMesh.rotation.y || 0, 0));
+    const meshQuatInv = meshQuat.clone().invert();
+
+    const targetGroupQuat = targetVisualQuat.clone().multiply(meshQuatInv);
+    const startGroupQuat = earthGroup.quaternion.clone();
+
+    // 6. Smooth Cinematic SLERP Animation
+    let frame = 0;
+    const totalFrames = 60; // 1 second at 60fps
+
+    function animateSpin() {
+        frame++;
+        const progress = frame / totalFrames;
+        const ease = 1 - Math.pow(1 - progress, 3); // Smooth ease-out
+
+        earthGroup.quaternion.slerpQuaternions(startGroupQuat, targetGroupQuat, ease);
+
+        if (frame < totalFrames) {
+            lockAnimationId = requestAnimationFrame(animateSpin);
+        } else {
+            lockAnimationId = null;
+        }
+    }
+
+    animateSpin();
+}
+
+export function resetTarget() {
+    // Hide the marker if it exists
+    if (earthGroup && earthGroup.userData.marker) {
+        earthGroup.userData.marker.visible = false;
+    }
+    // Resume ambient Earth rotation in updateEnvironment
+    isTargetLocked = false;
+}
+
+
+
+
+

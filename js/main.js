@@ -30,13 +30,14 @@ try {
         btn.classList.add('active');
 
         if (mode === 'sim') {
+            // Pull back to reveal the background Earth
             const startPos = camera.position.clone();
-            const endPos = new THREE.Vector3(0, 0, 8);
+            const endPos = new THREE.Vector3(7, 5, 12);
             let t = 0;
-            const zoomIn = setInterval(() => {
+            const pullBack = setInterval(() => {
                 t += 0.05;
                 camera.position.lerpVectors(startPos, endPos, t);
-                if (t >= 1) clearInterval(zoomIn);
+                if (t >= 1) clearInterval(pullBack);
             }, 16);
             controls.autoRotate = false;
         } else {
@@ -45,6 +46,15 @@ try {
             STATE.simTime = 0;
             satellite.rotation.set(0, 0, 0);
             controls.autoRotate = false;
+            // Zoom into dead center for Assembly mode
+            const startPos = camera.position.clone();
+            const endPos = new THREE.Vector3(0, 0, 7);
+            let t = 0;
+            const zoomIn = setInterval(() => {
+                t += 0.05;
+                camera.position.lerpVectors(startPos, endPos, t);
+                if (t >= 1) clearInterval(zoomIn);
+            }, 16);
         }
 
         // Reset all AI UI panels and re-apply availability rules
@@ -103,3 +113,8 @@ try {
 } catch (err) {
     throw err;
 }
+
+
+
+
+

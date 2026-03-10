@@ -1,5 +1,6 @@
 import { STATE, resetSimulation, BATTERY_CAPACITY_WH, SOLAR_FULL_OUTPUT_W } from './simulation.js';
 import { toggleComponent } from './satellite.js';
+import { resetTarget } from './scene.js';
 
 import { API_BASE_URL } from './config.js';
 
@@ -257,6 +258,7 @@ export function initUI(setModeCallback) {
         setModeCallback('build', e.target);
         resetAIUIState();
         updateAIAvailability(STATE);
+        resetTarget();
     };
     if (bSim) bSim.onclick = (e) => {
         setModeCallback('sim', e.target);
@@ -628,3 +630,9 @@ export function updateUIStats(simData) {
     // Keep AI buttons/messages in sync with sim lifecycle.
     updateAIAvailability(STATE);
 }
+
+
+
+
+
+

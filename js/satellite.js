@@ -353,3 +353,8 @@ export function createSatellite() {
 export function toggleComponent(id, state) { if (components[id]) components[id].visible = state; }
 export function getCoreLight() { return components['coreLight']; }
 export function getGroup() { return satelliteGroup; }
+
+
+
+
+
